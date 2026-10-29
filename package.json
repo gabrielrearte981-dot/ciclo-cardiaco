@@ -1,0 +1,9 @@
+{
+  "name": "ciclo-cardiaco",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Explorador didáctico del ciclo cardíaco, sin dependencias.",
+  "scripts": {
+    "test": "node --test tests/model.test.cjs"
+  }
+}

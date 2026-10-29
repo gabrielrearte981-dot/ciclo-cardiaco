@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f7">
+  <meta name="description" content="Explorador didáctico del ciclo cardíaco: válvulas, flujo y volumen ventricular sincronizados.">
+  <title>Ciclo cardíaco · Laboratorio de fisiología</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b746c'/%3E%3Cpath d='M4 17h7l3-8 5 16 3-8h6' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="model.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow"><span class="brand-mark" aria-hidden="true">∿</span> LABORATORIO DE FISIOLOGÍA <span class="header-divider">/</span> MODELO 01</p>
+        <h1>Ciclo cardíaco<span class="title-dot">.</span></h1>
+        <p class="page-subtitle">Una misma secuencia. Válvulas, flujo y volumen.</p>
+      </div>
+      <span class="model-badge"><span aria-hidden="true"></span> Corazón izquierdo · modelo didáctico</span>
+    </header>
+
+    <section class="metrics" aria-label="Lecturas del modelo">
+      <article class="metric"><p>Frecuencia cardíaca</p><div><strong id="metric-hr">75</strong><span>lpm</span></div><small>Ritmo del modelo</small></article>
+      <article class="metric"><p>Volumen sistólico</p><div><strong id="metric-sv">70</strong><span>mL/latido</span></div><small>120 − 50 mL</small></article>
+      <article class="metric"><p>Gasto cardíaco</p><div><strong id="metric-co">5,25</strong><span>L/min</span></div><small>Frecuencia × volumen sistólico</small></article>
+      <article class="metric metric-accent"><p>Volumen ventricular actual</p><div><strong id="metric-volume">50</strong><span>mL</span></div><small id="volume-trend">En aumento</small></article>
+    </section>
+
+    <main class="workspace">
+      <div class="main-column">
+        <section class="panel schematic-panel" aria-labelledby="schematic-heading">
+          <div class="panel-heading"><div><p class="eyebrow">01 / CIRCUITO</p><h2 id="schematic-heading">Seguí el recorrido</h2></div><span class="quiet-label">Esquema funcional</span></div>
+          <figure class="circuit-figure">
+            <svg id="circuit" viewBox="0 0 760 390" role="img" aria-labelledby="circuit-title circuit-description">
+              <title id="circuit-title">Circuito del corazón izquierdo</title>
+              <desc id="circuit-description">Aurícula izquierda conectada al ventrículo izquierdo por la válvula mitral; el ventrículo se conecta con la aorta por la válvula aórtica. El nivel ventricular representa su volumen.</desc>
+              <defs>
+                <clipPath id="ventricle-clip"><rect x="310" y="116" width="170" height="230" rx="14"/></clipPath>
+                <marker id="flow-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1 L8 5 L1 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></marker>
+              </defs>
+              <text x="125" y="70" class="chamber-title" text-anchor="middle">Aurícula izquierda</text>
+              <text x="395" y="70" class="chamber-title" text-anchor="middle">Ventrículo izquierdo</text>
+              <text x="652" y="70" class="chamber-title" text-anchor="middle">Aorta</text>
+              <text x="125" y="93" class="svg-muted" text-anchor="middle">Entrada</text>
+              <text x="395" y="93" class="svg-muted" text-anchor="middle">Cámara de volumen variable</text>
+              <text x="652" y="93" class="svg-muted" text-anchor="middle">Salida</text>
+
+              <rect x="48" y="146" width="155" height="200" rx="14" class="reservoir"/>
+              <rect x="48" y="218" width="155" height="128" rx="14" class="reservoir-fill"/>
+              <rect x="48" y="218" width="155" height="20" class="reservoir-fill"/>
+              <line x1="49" y1="218" x2="202" y2="218" class="reservoir-level"/>
+              <text x="125" y="278" class="chamber-initial" text-anchor="middle">AI</text>
+
+              <path d="M203 240 H310 M480 240 H593" class="pipe-underlay"/>
+              <path d="M203 240 H310 M480 240 H593" class="pipe"/>
+
+              <rect x="310" y="116" width="170" height="230" rx="14" class="ventricle-bg"/>
+              <g clip-path="url(#ventricle-clip)">
+                <rect id="ventricle-fill" x="310" y="273" width="170" height="73" class="ventricle-fill"/>
+                <line id="ventricle-level" x1="310" y1="273" x2="480" y2="273" class="ventricle-level"/>
+              </g>
+              <rect x="310" y="116" width="170" height="230" rx="14" class="ventricle-outline"/>
+              <text x="395" y="178" text-anchor="middle" class="chamber-initial">VI</text>
+              <text x="395" y="207" text-anchor="middle" class="chamber-reading"><tspan id="chamber-volume">50</tspan><tspan class="chamber-unit"> mL</tspan></text>
+              <path d="M486 146 h9 M486 263 h9" class="volume-tick"/>
+              <text x="502" y="150" class="svg-volume-label">120</text>
+              <text x="502" y="267" class="svg-volume-label">50</text>
+
+              <rect x="593" y="146" width="119" height="200" rx="14" class="reservoir aorta"/>
+              <rect x="593" y="194" width="119" height="152" rx="14" class="aorta-fill"/>
+              <rect x="593" y="194" width="119" height="20" class="aorta-fill"/>
+              <line x1="594" y1="194" x2="711" y2="194" class="aorta-level"/>
+              <text x="652" y="278" class="chamber-initial" text-anchor="middle">Ao</text>
+
+              <g id="mitral-flow" class="flow filling-flow" aria-hidden="true"><path d="M211 240 H302" marker-end="url(#flow-arrow)"/></g>
+              <g id="aortic-flow" class="flow ejection-flow" aria-hidden="true"><path d="M488 240 H584" marker-end="url(#flow-arrow)"/></g>
+              <g id="mitral-valve" class="valve" aria-hidden="true">
+                <circle cx="254" cy="221" r="3"/><circle cx="254" cy="259" r="3"/>
+                <path id="mitral-upper" d="M254 221 L271 228"/><path id="mitral-lower" d="M254 259 L271 252"/>
+              </g>
+              <g id="aortic-valve" class="valve" aria-hidden="true">
+                <circle cx="539" cy="221" r="3"/><circle cx="539" cy="259" r="3"/>
+                <path id="aortic-upper" d="M539 221 L539 240"/><path id="aortic-lower" d="M539 259 L539 240"/>
+              </g>
+              <text x="254" y="176" text-anchor="middle" class="valve-name">Mitral</text>
+              <text x="539" y="176" text-anchor="middle" class="valve-name">Aórtica</text>
+              <text id="mitral-svg-state" x="254" y="197" text-anchor="middle" class="valve-state">Abierta</text>
+              <text id="aortic-svg-state" x="539" y="197" text-anchor="middle" class="valve-state">Cerrada</text>
+              <text x="395" y="376" text-anchor="middle" class="svg-muted">El nivel indica volumen; no representa una superficie real de sangre.</text>
+            </svg>
+            <figcaption><span class="legend-line" aria-hidden="true"></span> Las flechas indican flujo a través de una válvula abierta.</figcaption>
+          </figure>
+          <div class="phase-summary" id="phase-summary">
+            <div class="phase-index" id="phase-index">01</div>
+            <div><p class="phase-category" id="phase-category">DIÁSTOLE VENTRICULAR</p><h3 id="phase-name">Llenado pasivo</h3><p id="phase-description">La sangre pasa de la aurícula al ventrículo. El llenado es rápido al principio y se hace más lento al final.</p><span class="pressure-relation" id="pressure-relation">P auricular &gt; P ventricular</span></div>
+          </div>
+        </section>
+
+        <section class="panel chart-panel" aria-labelledby="chart-heading">
+          <div class="panel-heading"><div><p class="eyebrow">02 / TIEMPO Y VOLUMEN</p><h2 id="chart-heading">Un latido, cinco fases</h2></div><output class="time-readout" id="time-readout">0 / 800 ms</output></div>
+          <div class="chart-container">
+            <svg id="volume-chart" viewBox="0 0 960 320" role="img" aria-labelledby="chart-title chart-description">
+              <title id="chart-title">Volumen ventricular a lo largo de un ciclo</title>
+              <desc id="chart-description">El volumen aumenta en el llenado y la sístole auricular, disminuye en la eyección y permanece constante en las fases isovolumétricas. Seleccioná un punto con el ratón o usá el control de tiempo debajo.</desc>
+              <g id="phase-backgrounds"></g><g id="chart-grid"></g><g id="timeline-segments"></g>
+              <path id="volume-area" class="chart-area"/>
+              <path id="volume-curve" class="chart-curve"/>
+              <g id="chart-labels"></g>
+              <line id="chart-cursor" y1="22" y2="266" class="chart-cursor"/>
+              <circle id="chart-dot-halo" r="10" class="chart-dot-halo"/>
+              <circle id="chart-dot" r="4.5" class="chart-dot"/>
+            </svg>
+          </div>
+          <div class="scrubber-row"><label for="cycle-position">Explorar ciclo</label><input id="cycle-position" type="range" min="0" max="10000" step="1" value="0" aria-describedby="scrubber-help"><output id="cycle-percent" for="cycle-position">0 %</output></div>
+          <p id="scrubber-help" class="help-text">Arrastrá el cursor sobre el gráfico o usá esta barra para pausar en cualquier instante.</p>
+          <div id="phase-buttons" class="phase-buttons" aria-label="Seleccionar fase"></div>
+        </section>
+      </div>
+
+      <aside class="sidebar" aria-label="Controles y estado">
+        <section class="panel control-panel" aria-labelledby="controls-heading">
+          <div class="panel-heading"><div><p class="eyebrow">EXPLORAR</p><h2 id="controls-heading">Control del ciclo</h2></div><span id="playback-status" class="status-badge">En pausa</span></div>
+          <button id="play-pause" class="primary-button" type="button"><svg id="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5 L19 12 L8 19 Z"/></svg><span id="play-label">Reproducir</span></button>
+          <div class="step-controls"><button id="previous-phase" type="button" title="Fase anterior (flecha izquierda)"><span aria-hidden="true">←</span> Anterior</button><button id="next-phase" type="button" title="Fase siguiente (flecha derecha)">Siguiente <span aria-hidden="true">→</span></button></div>
+          <button id="restart" class="text-button" type="button">↺ Volver al inicio del ciclo</button>
+          <div class="control-separator"></div>
+          <label class="control-label" for="heart-rate">Frecuencia cardíaca <output id="hr-output" for="heart-rate">75 <span>lpm</span></output></label>
+          <input id="heart-rate" type="range" min="40" max="150" step="1" value="75">
+          <div class="range-limits"><span>40 lpm</span><span>150 lpm</span></div>
+          <p class="control-caption">Duración del ciclo: <strong id="cycle-duration">800 ms</strong></p>
+          <label class="control-label speed-label" for="playback-speed">Velocidad de reproducción</label>
+          <select id="playback-speed"><option value="0.25" selected>×0,25 · cámara lenta</option><option value="0.5">×0,5 · cámara lenta</option><option value="1">×1 · tiempo real</option></select>
+          <p class="help-text">La cámara lenta cambia la observación, no la frecuencia ni el gasto cardíaco.</p>
+        </section>
+
+        <section class="panel valve-panel" aria-labelledby="valves-heading"><h2 id="valves-heading">Estado de las válvulas</h2><div class="valve-row"><span>Mitral</span><strong id="mitral-state" class="valve-badge is-open">Abierta</strong></div><div class="valve-row"><span>Aórtica</span><strong id="aortic-state" class="valve-badge">Cerrada</strong></div><p id="flow-description" class="flow-description">Flujo: aurícula → ventrículo</p></section>
+
+        <section class="model-note"><p class="eyebrow">SUPUESTO DEL MODELO</p><p><strong>Volumen sistólico fijo: 70 mL.</strong> Al cambiar la frecuencia se ajusta la duración de las fases, con mayor cambio en la diástole. No se simula la respuesta del llenado a la taquicardia.</p><dl><div><dt>Volumen telediastólico</dt><dd>120 mL</dd></div><div><dt>Volumen telesistólico</dt><dd>50 mL</dd></div></dl><div class="formula">VS = VTD − VTS<br>GC = FC × VS / 1000 <span>(L/min)</span></div></section>
+      </aside>
+    </main>
+    <footer class="page-footer"><span>Modelo esquemático · tiempos y curvas ilustrativos</span><span><kbd>Espacio</kbd> reproducir / pausar <span class="footer-separator">·</span> <kbd>←</kbd> <kbd>→</kbd> fases</span></footer>
+    <details class="about-model"><summary>Acerca de este modelo</summary><p>Se representa el corazón izquierdo mediante compartimentos y válvulas ideales. La aurícula y la aorta son reservorios esquemáticos: sus niveles no se calculan. El volumen ventricular y todos los indicadores comparten el mismo reloj. Las válvulas se abren o cierran en los límites de fase; no se resuelven presiones, resistencias ni dinámica de fluidos.</p><p>Las duraciones se ajustan con una regla didáctica, no con una ecuación clínica validada. La contracción y la relajación isovolumétricas conservan el volumen. El ciclo comienza aquí con la apertura mitral; se puede elegir otro punto de inicio sin cambiar la secuencia cíclica.</p><p>Referencia conceptual: <a href="https://openstax.org/books/anatomy-and-physiology-2e/pages/19-3-cardiac-cycle" target="_blank" rel="noreferrer">OpenStax · Anatomy and Physiology 2e, 19.3: Cardiac Cycle</a>. Diseño, textos del simulador y gráficos originales.</p></details>
+    <noscript><p class="noscript">Activá JavaScript para usar el simulador.</p></noscript>
+  </div>
+</body>
+</html>
